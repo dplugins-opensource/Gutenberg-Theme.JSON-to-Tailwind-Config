@@ -1,29 +1,7 @@
-// function convert() {
-//     const inputArea = document.getElementById("inputArea");
-//     const outputArea = document.getElementById("outputArea");
-
-//     const inputText = inputArea.value;
-//     const inputLines = inputText.split("\n");
-
-//     let outputObject = {};
-
-//     inputLines.forEach((line) => {
-//         const match = line.match(/--font-size-(.*):/);
-//         if (match && match[1]) {
-//             const key = match[1];
-//             outputObject[key] = `var(--font-size-${key})`;
-//         }
-//     });
-
-//     outputArea.value = JSON.stringify(outputObject, null, 2);
-// }
-
-
 function convert() {
     const inputArea = document.getElementById("inputArea");
     const outputArea = document.getElementById("outputArea");
 
-    // Extract the text inside the body brackets
     const bodyMatch = inputArea.value.match(/body\s*{([\s\S]*?)}/);
     if (!bodyMatch || !bodyMatch[1]) {
         outputArea.value = "Invalid input";
@@ -34,22 +12,29 @@ function convert() {
 
     let outputObject = {};
 
+    // Utility function to convert key to camelCase
+    const toCamelCase = (str) => {
+        let [first, ...rest] = str.split("-");
+        rest = rest.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
+        return [first, ...rest].join("");
+    };
+
     inputLines.forEach((line) => {
-        // Trim each line and match the CSS variable
         const match = line.trim().match(/--(.*):/);
         if (match && match[1]) {
             const keyComponents = match[1]
                 .split("--")
-                .filter((component) => component !== "wp"); // remove "wp" components
-            let currentObj = outputObject;
+                .filter(
+                    (component) => component !== "wp" && component !== "preset"
+                )
+                .map((component) => toCamelCase(component)); // Convert each key component to camelCase
 
+            let currentObj = outputObject;
             keyComponents.forEach((component, index) => {
                 if (!currentObj[component]) {
                     if (index === keyComponents.length - 1) {
-                        // If it is the last component, then assign the variable value
                         currentObj[component] = `var(--${match[1]})`;
                     } else {
-                        // If it is not the last component, then create a nested object
                         currentObj[component] = {};
                     }
                 }
@@ -58,8 +43,10 @@ function convert() {
         }
     });
 
-    outputArea.value = JSON.stringify(outputObject, null, 2)
-        .replace(/"([^"]+)":/g, "'$1':") // Replace double quotes around keys with single quotes
-        .replace(/"([^\"]+)"/g, "'$1'"); // Replace double quotes around string values with single quotes
-}
+    const outputString = JSON.stringify(outputObject, null, 2)
+        .replace(/"([^"]+)":/g, "'$1':")
+        .replace(/"([^\"]+)"/g, "'$1'");
 
+    // Remove the wrapping brackets
+    outputArea.value = outputString.slice(1, -1).trim();
+}
