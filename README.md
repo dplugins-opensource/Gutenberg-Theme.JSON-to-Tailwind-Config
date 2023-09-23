@@ -73,6 +73,7 @@ body {
 ```
 
 ```JSON
+{
 colors: {
     black: "'var(--wp--preset--color--black)'",
     cyanBluishGray: "'var(--wp--preset--color--cyan-bluish-gray)'",
@@ -148,4 +149,6 @@ colors: {
     outlined: "'var(--wp--preset--shadow--outlined)'",
     crisp: "'var(--wp--preset--shadow--crisp)'"
   }
+}
+
 ```
