@@ -52,4 +52,14 @@ body {
 #convertBTN:hover {
   cursor: pointer;
   background-color: #5d78f4;
+}
+
+.convertSettings {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  border: 2px solid white;
+  padding: 1rem;
+  display: flex;
+  gap: 2rem;
 }/*# sourceMappingURL=style.css.map */

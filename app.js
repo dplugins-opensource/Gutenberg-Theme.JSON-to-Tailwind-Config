@@ -1,61 +1,67 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Load user's choices from localStorage or default to specified categories if none exist
+    const defaultChoices = ["colors", "font-size", "font-family", "spacing"];
+    const storedChoices = JSON.parse(localStorage.getItem('groupChoices')) || defaultChoices;
+    
+    const checkboxes = document.querySelectorAll('#optionsForm input[type="checkbox"]');
+    
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = storedChoices.includes(checkbox.value);
+    });
+    
+    // When user changes a checkbox, update localStorage
+    document.getElementById('optionsForm').addEventListener('change', () => {
+        const selectedGroups = Array.from(checkboxes)
+            .filter(checkbox => checkbox.checked)
+            .map(checkbox => checkbox.value);
+        localStorage.setItem('groupChoices', JSON.stringify(selectedGroups));
+    });
+});
+
 function convert() {
-    const inputArea = document.getElementById("inputArea");
-    const outputArea = document.getElementById("outputArea");
-
-    const bodyMatch = inputArea.value.match(/body\s*{([\s\S]*?)}/);
-    if (!bodyMatch || !bodyMatch[1]) {
-        outputArea.value = "Invalid input";
-        return;
-    }
-
-    const inputLines = bodyMatch[1].split("\n");
-
-    let outputObject = {};
-
-    // Utility function to convert key to camelCase
-    const toCamelCase = (str) => {
-        let [first, ...rest] = str.split("-");
-        rest = rest.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
-        return [first, ...rest].join("");
-    };
-
-    // Function to rename specific group names
-    const renameGroupName = (name) => {
-        const renameMap = {
-            color: "colors",
-        };
-        return renameMap[name] || name;
-    };
-
-    inputLines.forEach((line) => {
-        const match = line.trim().match(/--(.*):/);
-        if (match && match[1]) {
-            const keyComponents = match[1]
-                .split("--")
-                .filter(
-                    (component) => component !== "wp" && component !== "preset"
-                )
-                .map((component) => renameGroupName(toCamelCase(component)));
-
-            let currentObj = outputObject;
-            keyComponents.forEach((component, index) => {
-                if (!currentObj[component]) {
-                    if (index === keyComponents.length - 1) {
-                        currentObj[component] = `'var(--${match[1]})'`;
-                    } else {
-                        currentObj[component] = {};
-                    }
-                }
-                currentObj = currentObj[component];
-            });
+    const input = document.getElementById("inputArea").value;
+    let output = {};
+    
+    input.split(";").forEach((line) => {
+        const match = line
+            .trim()
+            .match(
+                /^--wp--preset--(color|gradient|font-size|font-family|spacing|shadow)--([^:]+):\s*(.+)$/
+            );
+        if (match) {
+            const category = match[1];
+            const name = match[2];
+            const value = match[3];
+            
+            if (!output[category]) {
+                output[category] = {};
+            }
+            
+            const jsName = name.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+            output[category][jsName] = `var(--wp--preset--${category}--${name})`;
         }
     });
+    
+    // Rename color to colors if it exists
+    if (output.color) {
+        output.colors = {...output.color};
+        delete output.color;
+    }
 
-    const outputString = JSON.stringify(outputObject, null, 2).replace(
-        /"([a-zA-Z0-9]+)":/g,
-        "$1:"
-    ); // Remove quotes around group names
-
-    // Remove the wrapping brackets
-    outputArea.value = outputString.slice(1, -1).trim();
+    // Retrieve the user's choices from localStorage.
+    const selectedGroups = JSON.parse(localStorage.getItem('groupChoices')) || defaultChoices;
+    
+    let result = "";
+    for (const category in output) {
+        // Only include the categories in the result if the user has selected them
+        if (selectedGroups.includes(category)) {
+            result += `${category}: {\n`;
+            for (const name in output[category]) {
+                result += `  '${name}': '${output[category][name]}',\n`;
+            }
+            result += "},\n";
+        }
+    }
+    
+    document.getElementById("outputArea").value = result;
 }

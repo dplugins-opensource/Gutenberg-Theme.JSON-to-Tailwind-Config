@@ -10,6 +10,28 @@
     <textarea id="inputArea" rows="10" cols="50" placeholder="Paste CSS Variables here..."></textarea><br>        
     <textarea id="outputArea" rows="10" cols="50" readonly></textarea>    
     <button id="convertBTN" onclick="convert()">Convert</button>
+
+    <form id="optionsForm" class="convertSettings">
+    <label>
+        <input type="checkbox" name="group" value="colors"> Colors
+    </label>
+    <label>
+        <input type="checkbox" name="group" value="gradient"> Gradient
+    </label>
+    <label>
+        <input type="checkbox" name="group" value="font-size"> Font Size
+    </label>
+    <label>
+        <input type="checkbox" name="group" value="font-family"> Font Family
+    </label>
+    <label>
+        <input type="checkbox" name="group" value="spacing"> Spacing
+    </label>
+    <label>
+        <input type="checkbox" name="group" value="shadow"> Shadow
+    </label>
+</form>
+
     
     <script src="app.js"></script>
 </body>
