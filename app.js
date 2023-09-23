@@ -19,6 +19,14 @@ function convert() {
         return [first, ...rest].join("");
     };
 
+    // Function to rename specific group names
+    const renameGroupName = (name) => {
+        const renameMap = {
+            color: "colors",
+        };
+        return renameMap[name] || name;
+    };
+
     inputLines.forEach((line) => {
         const match = line.trim().match(/--(.*):/);
         if (match && match[1]) {
@@ -27,13 +35,13 @@ function convert() {
                 .filter(
                     (component) => component !== "wp" && component !== "preset"
                 )
-                .map((component) => toCamelCase(component)); // Convert each key component to camelCase
+                .map((component) => renameGroupName(toCamelCase(component)));
 
             let currentObj = outputObject;
             keyComponents.forEach((component, index) => {
                 if (!currentObj[component]) {
                     if (index === keyComponents.length - 1) {
-                        currentObj[component] = `var(--${match[1]})`;
+                        currentObj[component] = `'var(--${match[1]})'`;
                     } else {
                         currentObj[component] = {};
                     }
@@ -43,9 +51,10 @@ function convert() {
         }
     });
 
-    const outputString = JSON.stringify(outputObject, null, 2)
-        .replace(/"([^"]+)":/g, "'$1':")
-        .replace(/"([^\"]+)"/g, "'$1'");
+    const outputString = JSON.stringify(outputObject, null, 2).replace(
+        /"([a-zA-Z0-9]+)":/g,
+        "$1:"
+    ); // Remove quotes around group names
 
     // Remove the wrapping brackets
     outputArea.value = outputString.slice(1, -1).trim();
