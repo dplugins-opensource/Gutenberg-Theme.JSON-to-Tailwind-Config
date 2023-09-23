@@ -1,0 +1,55 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+#inputArea {
+  position: fixed;
+  top: 0;
+  width: 50%;
+  min-height: 100vh;
+  padding: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  line-height: 1.6;
+  background-color: #1e293b;
+  color: white;
+}
+#inputArea::-moz-placeholder {
+  color: #cbd5e1;
+}
+#inputArea::placeholder {
+  color: #cbd5e1;
+}
+
+#outputArea {
+  position: fixed;
+  top: 0;
+  width: 50%;
+  min-height: 100vh;
+  padding: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  line-height: 1.6;
+  left: 50%;
+  background-color: #f1f5f9;
+}
+
+#convertBTN {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
+  font-size: 1.2rem;
+  padding: 1rem 2rem;
+  background-color: #3858e9;
+  color: white;
+}
+#convertBTN:hover {
+  cursor: pointer;
+  background-color: #5d78f4;
+}/*# sourceMappingURL=style.css.map */

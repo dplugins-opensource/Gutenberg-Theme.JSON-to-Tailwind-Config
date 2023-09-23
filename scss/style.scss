@@ -1,0 +1,58 @@
+$system-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: 0;
+}
+
+
+@mixin textArea{
+    position: fixed;
+    top: 0;
+        width: 50%;
+        min-height: 100vh;
+        padding: 1rem;
+        font-family: $system-font;
+        line-height: 1.6;
+}
+
+body {
+  font-family: $system-font;
+}
+
+#inputArea{
+        @include textArea;        
+        background-color: #1e293b;
+        color: white;   
+        
+        &::placeholder {
+          color: #cbd5e1;
+        }
+}
+
+
+#outputArea{
+        @include textArea;    
+        left: 50%;
+        background-color: #f1f5f9;    
+}
+
+
+
+#convertBTN{
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    background-color: #3858e9;
+    color: white;
+
+    &:hover{
+        cursor: pointer;
+        background-color: #5d78f4;
+    }
+}
