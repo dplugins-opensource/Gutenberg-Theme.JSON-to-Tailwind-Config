@@ -16,6 +16,26 @@ document.addEventListener('DOMContentLoaded', function() {
             .map(checkbox => checkbox.value);
         localStorage.setItem('groupChoices', JSON.stringify(selectedGroups));
     });
+
+    const copyBTN = document.getElementById("copyBTN");
+    copyBTN.addEventListener("click", function () {
+        const outputArea = document.getElementById("outputArea");
+        navigator.clipboard
+            .writeText(outputArea.value)
+            .then(function () {
+                // Change the button text to 'Copied'
+                copyBTN.textContent = "Copied!";
+
+                // Set a timeout to change the text back to original after 2 seconds
+                setTimeout(function () {
+                    copyBTN.textContent = "Copy Code";
+                }, 2000); // 2000 milliseconds = 2 seconds
+            })
+            .catch(function (err) {
+                console.error("Unable to copy text", err);
+            });
+    });
+
 });
 
 function convert() {

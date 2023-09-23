@@ -35,26 +35,44 @@ body {
 
 #outputArea{
         @include textArea;    
+        padding: 1rem 3rem;
         left: 50%;
         background-color: #f1f5f9;    
 }
 
 
-
 #convertBTN{
     position: fixed;
     top: 1rem;
-    right: 1rem;
+    right: 50%;
+    transform: translateX(50%);
     z-index: 100;
-    font-size: 1.2rem;
-    padding: 1rem 2rem;
+    padding: 0.5;
+    border-radius: 1000px;
     background-color: #3858e9;
     color: white;
+    width: 4rem;
+    height: 4rem;
+    line-height: 0;
 
     &:hover{
         cursor: pointer;
-        background-color: #5d78f4;
+        background-color: #617eff;
     }
+
+    svg{
+      fill: white;
+      width: 2rem;
+      height: 2rem;
+      margin: 0;
+      padding: 0;
+    }
+}
+
+#copyBTN{
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
 }
 
 
