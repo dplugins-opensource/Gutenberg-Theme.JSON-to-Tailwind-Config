@@ -72,7 +72,7 @@ body {
 }
 ```
 
-```JSON
+```
 gradient: {
   'vividCyanBlueToVividPurple': 'var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple)',
   'lightGreenCyanToVividGreenCyan': 'var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan)',
